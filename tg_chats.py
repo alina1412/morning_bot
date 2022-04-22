@@ -1,4 +1,3 @@
-
 import time
 import requests
 from config import Config
@@ -24,7 +23,7 @@ class TGChats:
     def make_url_request(self):
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/getUpdates"
         params = {"offset": self.offset, "timeout": 15}
-        response = requests.post(url, params)   
+        response = requests.post(url, params)
         response_json = response.json()
         if not response_json['ok']:
             return
@@ -33,31 +32,32 @@ class TGChats:
     def parse_response(self, updates):
         for upd in updates:
             self.offset = upd["update_id"] + 1
-            
+
             if "message" in upd:
                 chat_id = upd["message"]["from"]["id"]
                 if "text" in upd["message"]:
-                    user_ask = upd ["message"]["text"]
+                    user_ask = upd["message"]["text"]
                     if user_ask == "/start":
                         return {"command": "/start", "chat_id": chat_id}
-                        
+       
             if "callback_query" in upd:
                 info_dict = upd["callback_query"]
                 chat_id = info_dict["from"]["id"]
-                return {"command": "upd_choice", "chat_id": chat_id, 
-                        "choice": info_dict["data"]} 
+                return {"command": "upd_choice", "chat_id": chat_id,
+                        "choice": info_dict["data"]}
         return None
 
     def upd_choice(self, data):
         chat_id = data["chat_id"]
         ChoicesRecords.choices[chat_id] = data["choice"]
-        text = f"We'll send you a {ChoicesRecords.choices[chat_id]} at the morning!"
+        text = (f"We'll send you a {ChoicesRecords.choices[chat_id]}" +
+                "at the morning!")
         params = {'chat_id': chat_id, 'text': text}
         self.send_tg_message(params)
 
     def greeting_keyboard(self, data):
-        print("greeting_keyboard") 
-        params = {'chat_id': data["chat_id"], 
+        print("greeting_keyboard")
+        params = {'chat_id': data["chat_id"],
                   'text': 'Choose what to get at the morning',
                   'reply_markup': Config.OPTS_KEYBOARD}
         self.send_tg_message(params)

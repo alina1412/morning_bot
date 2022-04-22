@@ -14,15 +14,15 @@ class Config:
         "inline_keyboard": [
             [
                 {
-                "text": "picture",
-                "callback_data": "picture"
+                    "text": "picture",
+                    "callback_data": "picture"
                 },
                 {
-                "text": "weather in Moscow",
-                "callback_data": "weather"
+                    "text": "weather in Moscow",
+                    "callback_data": "weather"
                 }
             ]
-        ],   
+        ],
         "remove_keyboard": True
     })
 
