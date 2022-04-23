@@ -1,6 +1,6 @@
 import time
-import requests
 from config import Config
+import httpx
 
 
 class TGChats:
@@ -9,24 +9,26 @@ class TGChats:
         self.BOT_TOKEN = Config().BOT_TOKEN
         self.offset = 0
 
-    def list_updates(self, choices_collector):
-        print("do func list_updates")
-        response = self.make_url_request()
+    async def list_updates(self, choices_collector):
+        print("do func list_updates", time.strftime('%X'))
+        response = await self.make_url_request()
         if response:
             command_data = self.parse_response(response)
             if command_data["command"] == "/start":
-                self.greeting_keyboard(command_data)
+                await self.greeting_keyboard(command_data)
             elif command_data["command"] == "upd_choice":
-                self.upd_choice(command_data, choices_collector)
+                await self.upd_choice(command_data, choices_collector)
 
-    def make_url_request(self):
+    async def make_url_request(self):
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/getUpdates"
-        params = {"offset": self.offset, "timeout": 15}
-        response = requests.post(url, params)
-        response_json = response.json()
-        if not response_json['ok']:
-            return
-        return response_json['result']
+        params = {"offset": self.offset}    # "timeout": 15
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params)
+            response_json = response.json()
+            if not response_json['ok']:
+                return
+            return response_json['result']
 
     def parse_response(self, updates):
         for upd in updates:
@@ -46,21 +48,22 @@ class TGChats:
                         "choice": info_dict["data"]}
         return None
 
-    def upd_choice(self, data, choices_collector):
+    async def upd_choice(self, data, choices_collector):
         choices_collector.save_choice(data["chat_id"], data["choice"])
         text = (f"We'll send you a {data['choice']}" +
                 " at the morning!")
         params = {'chat_id': data["chat_id"], 'text': text}
-        self.send_tg_message(params)
+        await self.send_tg_message(params)
 
-    def greeting_keyboard(self, data):
+    async def greeting_keyboard(self, data):
         print("greeting_keyboard")
         params = {'chat_id': data["chat_id"],
                   'text': 'Choose what to get at the morning',
                   'reply_markup': Config.OPTS_KEYBOARD}
-        self.send_tg_message(params)
-        time.sleep(2)
+        await self.send_tg_message(params)
+        # time.sleep(2)
 
-    def send_tg_message(self, params):
+    async def send_tg_message(self, params):
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendMessage"
-        requests.post(url, params=params)
+        async with httpx.AsyncClient() as client:
+            await client.post(url, params=params)

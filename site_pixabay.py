@@ -1,5 +1,6 @@
 import os
 from random import randint
+import httpx
 import requests
 from config import Config
 
@@ -9,23 +10,25 @@ class Pixabay:
     _amount = 200
 
     @staticmethod
-    def get_answer() -> dict:
-        data = Pixabay.get_data()
+    async def get_answer() -> dict:
+        data = await Pixabay.get_data()
         path = Pixabay.save_data(data)
         return Pixabay.return_data(path)
 
     @staticmethod
-    def get_data():
+    async def get_data():
         url = 'https://pixabay.com/api/'
         params = {"key": Pixabay._KEY_PIC, "q": "morning",
                   "safesearch": "true", "per_page": Pixabay._amount}
-        data = requests.get(url, params=params).json()
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, params=params)
+            data = resp.json()
 
-        if data and data["totalHits"]:
-            return data
-        else:
-            print("No data")
-            return None
+            if data and data["totalHits"]:
+                return data
+            else:
+                print("No data")
+                return None
 
     @staticmethod
     def save_data(data):

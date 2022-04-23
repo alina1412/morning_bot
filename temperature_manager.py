@@ -3,8 +3,8 @@ from site_openweathermap import Openweather
 
 class TemperatureManager:
 
-    def get_morning_data(self) -> dict:
-        ans = Openweather.get_answer()
+    async def get_morning_data(self) -> dict:
+        ans = await Openweather.get_answer()
         if self.isvalid(ans):
             return ans
         return {}

@@ -1,12 +1,4 @@
-# from collections import defaultdict
-# from dataclasses import dataclass     # , field
 import sqlite3
-
-# @dataclass
-# class ChoicesRecords:
-#     choices = dict()
-#     # dict[int, str] = field(default_factory=defaultdict[int, str])
-# # user_id : switch_type
 
 
 class Data:
@@ -58,29 +50,27 @@ class Data:
 
 
 class Collector:
-    d = None
 
     def __init__(self) -> None:
-        d = Data()
-        d.connect()
-        d.create()
-        Collector.d = d
+        self.d = Data()
+        self.d.connect()
+        self.d.create()
 
     def save_choice(self, user_id, choice):
         try:
-            Collector.d.insert(user_id, choice)
+            self.d.insert(user_id, choice)
         except Exception:
-            Collector.d.update_decision(user_id, choice)
+            self.d.update_decision(user_id, choice)
 
     def get_choice(self, user_id):
         condition = f"WHERE user_id = {user_id}"
-        pair = list(Collector.d.select_sql(condition))
+        pair = list(self.d.select_sql(condition))
         return pair[0][1] if pair else []
 
     def get_all_choices(self):
-        return list(Collector.d.select_sql())
+        return list(self.d.select_sql())
 
 
 # print(Collector().get_all_choices())
-# res = Collector().get_choice(500)
+# res = Collector().get_choice(380920761)
 # print(res)
