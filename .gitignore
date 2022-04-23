@@ -4,3 +4,4 @@ __pycache__/*
 tmp/*
 checks/*
 check*.py
+choices.db

@@ -1,7 +1,6 @@
 import time
 import requests
 from config import Config
-from choices_records import ChoicesRecords
 
 
 class TGChats:
@@ -10,7 +9,7 @@ class TGChats:
         self.BOT_TOKEN = Config().BOT_TOKEN
         self.offset = 0
 
-    def list_updates(self):
+    def list_updates(self, choices_collector):
         print("do func list_updates")
         response = self.make_url_request()
         if response:
@@ -18,7 +17,7 @@ class TGChats:
             if command_data["command"] == "/start":
                 self.greeting_keyboard(command_data)
             elif command_data["command"] == "upd_choice":
-                self.upd_choice(command_data)
+                self.upd_choice(command_data, choices_collector)
 
     def make_url_request(self):
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/getUpdates"
@@ -39,7 +38,7 @@ class TGChats:
                     user_ask = upd["message"]["text"]
                     if user_ask == "/start":
                         return {"command": "/start", "chat_id": chat_id}
-       
+
             if "callback_query" in upd:
                 info_dict = upd["callback_query"]
                 chat_id = info_dict["from"]["id"]
@@ -47,12 +46,11 @@ class TGChats:
                         "choice": info_dict["data"]}
         return None
 
-    def upd_choice(self, data):
-        chat_id = data["chat_id"]
-        ChoicesRecords.choices[chat_id] = data["choice"]
-        text = (f"We'll send you a {ChoicesRecords.choices[chat_id]}" +
-                "at the morning!")
-        params = {'chat_id': chat_id, 'text': text}
+    def upd_choice(self, data, choices_collector):
+        choices_collector.save_choice(data["chat_id"], data["choice"])
+        text = (f"We'll send you a {data['choice']}" +
+                " at the morning!")
+        params = {'chat_id': data["chat_id"], 'text': text}
         self.send_tg_message(params)
 
     def greeting_keyboard(self, data):

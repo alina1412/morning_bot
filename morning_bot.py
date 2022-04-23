@@ -3,7 +3,7 @@ from sender import Sender
 from switcher import Switcher
 from tg_chats import TGChats
 from morning_determiner import MorningDeterminer
-from choices_records import ChoicesRecords
+from choices_records import Collector
 
 
 class MorningBot:
@@ -12,6 +12,7 @@ class MorningBot:
         self.sender = Sender()
         self.tg_chats = TGChats()
         self.fetcher = None
+        self.collector = Collector()
 
     def process(self, person):
         print(f"MorningBot: getting data for the {person}")
@@ -23,16 +24,15 @@ class MorningBot:
 
         while True:
             time.sleep(5)
-            self.tg_chats.list_updates()
+            self.tg_chats.list_updates(self.collector)
             if MorningDeterminer.ismorning():
-                for person_id in ChoicesRecords.choices:
-                    type_choice = ChoicesRecords.choices[person_id]
-                    self.fetcher = Switcher(type_choice)
+                all_choices = self.collector.get_all_choices()
+                for person_id, choice in all_choices:
+                    self.fetcher = Switcher(choice)
                     self.process(person_id)
 
 
 def main():
-
     MorningBot().run()
 
 
