@@ -12,7 +12,6 @@ class MorningBot:
     def __init__(self) -> None:
         self.sender = Sender()
         self.tg_chats = TGChats()
-        # self.fetcher = None
         self.collector = Collector()
 
     async def process(self, person, manager):
@@ -26,6 +25,7 @@ class MorningBot:
 
         while True:
             await self.tg_chats.list_updates(self.collector)
+            time.sleep(5)
 
             if MorningDeterminer.ismorning():
                 all_choices = self.collector.get_all_choices()
