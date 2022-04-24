@@ -1,7 +1,7 @@
 import os
+import aiofiles
 from random import randint
 import httpx
-import requests
 from config import Config
 
 
@@ -12,7 +12,7 @@ class Pixabay:
     @staticmethod
     async def get_answer() -> dict:
         data = await Pixabay.get_data()
-        path = Pixabay.save_data(data)
+        path = await Pixabay.save_data(data)
         return Pixabay.return_data(path)
 
     @staticmethod
@@ -31,16 +31,20 @@ class Pixabay:
                 return None
 
     @staticmethod
-    def save_data(data):
+    async def save_data(data):
         rand_choice = randint(0, Pixabay._amount - 1)
         # print(len(data["hits"]), data["totalHits"])
         pic_addr = data["hits"][rand_choice]["webformatURL"]
         randname = Randomizer.randomize_name() + ".jpg"
         dest_with_name = os.path.join(Config.TMP_DIR, randname)
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(pic_addr)
 
-        with open(dest_with_name, 'wb') as output:
-            for chunk in requests.get(pic_addr):
-                output.write(chunk)
+        async with aiofiles.open(dest_with_name, "wb") as output:
+            async for chunk in resp.aiter_bytes():
+                if chunk:
+                    await output.write(chunk)
+
         return dest_with_name
 
     @staticmethod
