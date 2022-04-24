@@ -27,3 +27,4 @@ morning_bot.py                  # main funcion for running the program
 								# methods as getFile, sendMessage,
 								# sendAudio, getUpdates
 ```
+![scheme](https://user-images.githubusercontent.com/8655093/164984131-7546e538-025e-4a4f-9b12-30f92941c79a.jpg)
