@@ -25,9 +25,6 @@ class MorningBot:
     async def run(self):
 
         while True:
-            time.sleep(6)
-            print()
-
             await self.tg_chats.list_updates(self.collector)
 
             if MorningDeterminer.ismorning():
@@ -36,6 +33,12 @@ class MorningBot:
                 for person_id, choice in all_choices:
                     que.append(self.process(person_id, Switcher(choice)))
                 await asyncio.gather(*que)
+
+                for i in range(60):     # 60 - 5 min
+                    await self.tg_chats.list_updates(self.collector)
+                    print("sleep", time.strftime('%X'))
+                    time.sleep(5)
+                print()
 
 
 def main():
