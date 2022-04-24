@@ -1,4 +1,4 @@
-from site_openweathermap import Openweather
+from fetchers.site_openweathermap import Openweather
 
 
 class TemperatureManager:

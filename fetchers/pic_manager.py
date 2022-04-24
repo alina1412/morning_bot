@@ -1,5 +1,5 @@
 import os
-from site_pixabay import Pixabay
+from fetchers.site_pixabay import Pixabay
 
 
 class PictureManager:
