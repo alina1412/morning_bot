@@ -73,4 +73,5 @@ class Collector:
 
 # print(Collector().get_all_choices())
 # res = Collector().get_choice(380920761)
+# Collector().save_choice(11, "5")
 # print(res)
