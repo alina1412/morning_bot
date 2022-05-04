@@ -1,16 +1,20 @@
 # Telegram Morning bot
 
-### (in the process of updating)
-
 ## Description
 
 Sends to a subscriber a random picture or a temperature in Moscow at the morning. Asks a user to choose one of those options (the choice can be changed).
 
 ## Usage
 
-To start a bot user types "/start".
+To start a bot user types `/start`.
 
-Then he gets a keyboard with options what morning information he wants to receive from bot.
+Then he gets a telegram-*keyboard* with options what morning information he wants to receive from bot.
+
+![](image/README/1651647957013.png)
+
+## Purpose
+
+The project make for educational purpose to use a structure of classes, api-requests, asyncio library, sqlite3 database. 
 
 ## Structure
 
