@@ -2,6 +2,8 @@ import httpx
 from config import Config
 
 
+# classes Sender, TextSender, PictureSender
+
 class Sender:
     def __init__(self):
         self.BOT_TOKEN = Config.BOT_TOKEN

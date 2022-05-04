@@ -1,5 +1,8 @@
 import sqlite3
 
+# classes Data and Collector to keep track of user choices
+# in sqlite db
+
 
 class Data:
 

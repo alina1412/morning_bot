@@ -15,16 +15,26 @@ Then he gets a keyboard with options what morning information he wants to receiv
 ## Structure
 
 ```py
-.env.example                    # environmental variables - token for 
+morning_bot
+	morning_bot.py          # main funcion for running the program
+	.env.example            # environmental variables - token for 
                                 # telegram and sites.
-.gitignore                      #
-config.py                       #  
 
-morning_bot.py                  # main funcion for running the program
+	config.py                #  
+	morning_determiner.py 
+	sender.py	         # calls methods from other classes to send morning data to users
+	switcher.py		 # switch choice**
+	tg_chats.py		 # sends requests to api.telegram.org*
+	choices_records.py	 # to keep track of user choices in db
+	fetchers/
+		- __init__.py
+		* pic_manager.py
+		* site_pixabay.py
+		* temperature_manager.py
+		* site_openweathermap.py
 
-				# requests to api.telegram.org with such 
-								# methods as getFile, sendMessage,
-								# sendAudio, getUpdates
+* methods as sendMessage, getUpdates
+** returns an instanse of TemperatureManager or PictureManager
 ```
 
 ![scheme](https://user-images.githubusercontent.com/8655093/164984131-7546e538-025e-4a4f-9b12-30f92941c79a.jpg)
