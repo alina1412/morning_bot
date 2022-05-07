@@ -5,3 +5,4 @@ tmp/*
 checks/*
 check*.py
 choices.db
+mbot_venv/
