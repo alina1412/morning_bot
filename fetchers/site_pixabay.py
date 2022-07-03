@@ -36,10 +36,14 @@ class Pixabay:
         # print(len(data["hits"]), data["totalHits"])
         pic_addr = data["hits"][rand_choice]["webformatURL"]
         randname = Randomizer.randomize_name() + ".jpg"
-        dest_with_name = os.path.join(Config.TMP_DIR, randname)
+        folder_name = Config.TMP_DIR
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+
+        dest_with_name = os.path.join(folder_name, randname)
         async with httpx.AsyncClient() as client:
             resp = await client.get(pic_addr)
-
+        
         async with aiofiles.open(dest_with_name, "wb") as output:
             async for chunk in resp.aiter_bytes():
                 if chunk:
