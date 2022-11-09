@@ -5,7 +5,6 @@ import sqlite3
 
 
 class Data:
-
     def __init__(self) -> None:
         self.db = "choices.db"
         self.table_name = "users"
@@ -34,15 +33,14 @@ class Data:
             self.conn.commit()
 
     def select_sql(self, condition=""):
-        q = (f"SELECT * FROM {self.table_name}" +
-             " " + condition)
+        q = f"SELECT * FROM {self.table_name}" + " " + condition
         with self.conn:
             return self.conn.execute(q)
 
     def insert(self, user_id, choice):
-        q = f'''INSERT into {self.table_name}
+        q = f"""INSERT into {self.table_name}
             (user_id, choice)
-            VALUES (?,?)'''
+            VALUES (?,?)"""
         with self.conn:
             self.conn.execute(q, (user_id, choice))
             self.conn.commit()
@@ -53,7 +51,6 @@ class Data:
 
 
 class Collector:
-
     def __init__(self) -> None:
         self.d = Data()
         self.d.connect()

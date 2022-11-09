@@ -2,8 +2,8 @@ import time
 
 from config import Config
 
-class MorningDeterminer:
 
+class MorningDeterminer:
     @staticmethod
     def ismorning() -> bool:
         # 08:00 - 08:05
@@ -13,10 +13,10 @@ class MorningDeterminer:
 
         cur_time = time.strftime("%H:%M")
 
-        if (BEGIN_H == int(cur_time[:2]) and
-           BEGIN_MIN <= int(cur_time[3:]) <= END_M):
+        if BEGIN_H == int(cur_time[:2]) and BEGIN_MIN <= int(cur_time[3:]) <= END_M:
             return True
         return False
+
 
 # ans = MorningDeterminer.ismorning()
 # print(ans)

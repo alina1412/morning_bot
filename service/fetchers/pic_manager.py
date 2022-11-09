@@ -1,9 +1,9 @@
 import os
-from fetchers.site_pixabay import Pixabay
+
+from service.fetchers.site_pixabay import Pixabay
 
 
 class PictureManager:
-
     async def get_morning_data(self) -> dict:
         ans = await Pixabay.get_answer()
         if self.isvalid(ans):

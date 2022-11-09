@@ -1,8 +1,9 @@
 import httpx
+
 from config import Config
 
-
 # classes Sender, TextSender, PictureSender
+
 
 class Sender:
     def __init__(self):
@@ -25,8 +26,7 @@ class TextSender(Sender):
             return
         print("sending text", data, self.BOT_TOKEN)
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendMessage"
-        params = {'chat_id': person,
-                  'text': 'Morning!\n' + data["type_text"]}
+        params = {"chat_id": person, "text": "Morning!\n" + data["type_text"]}
         async with httpx.AsyncClient() as client:
             await client.post(url, params=params)
 
@@ -48,9 +48,11 @@ class PictureSender(Sender):
         print("sending picture path", data, self.BOT_TOKEN)
 
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendPhoto"
-        params = {'chat_id': person,
-                  'caption': 'Morning!\n' + default_caption,
-                  'media_type': 'photo'}
+        params = {
+            "chat_id": person,
+            "caption": "Morning!\n" + default_caption,
+            "media_type": "photo",
+        }
 
         async with httpx.AsyncClient() as client:
             with open(image_path, "rb") as pic_file:

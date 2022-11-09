@@ -1,5 +1,5 @@
-from fetchers.pic_manager import PictureManager
-from fetchers.temperature_manager import TemperatureManager
+from service.fetchers.pic_manager import PictureManager
+from service.fetchers.temperature_manager import TemperatureManager
 
 
 class Switcher:

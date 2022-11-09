@@ -1,7 +1,9 @@
 import os
-import aiofiles
 from random import randint
+
+import aiofiles
 import httpx
+
 from config import Config
 
 
@@ -17,9 +19,13 @@ class Pixabay:
 
     @staticmethod
     async def get_data():
-        url = 'https://pixabay.com/api/'
-        params = {"key": Pixabay._KEY_PIC, "q": "morning",
-                  "safesearch": "true", "per_page": Pixabay._amount}
+        url = "https://pixabay.com/api/"
+        params = {
+            "key": Pixabay._KEY_PIC,
+            "q": "morning",
+            "safesearch": "true",
+            "per_page": Pixabay._amount,
+        }
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, params=params)
             data = resp.json()
@@ -43,7 +49,7 @@ class Pixabay:
         dest_with_name = os.path.join(folder_name, randname)
         async with httpx.AsyncClient() as client:
             resp = await client.get(pic_addr)
-        
+
         async with aiofiles.open(dest_with_name, "wb") as output:
             async for chunk in resp.aiter_bytes():
                 if chunk:
@@ -53,13 +59,14 @@ class Pixabay:
 
     @staticmethod
     def return_data(dest_with_name):
-        return {"type_picture_path": dest_with_name,
-                "default_caption": "from https://pixabay.com/"}
+        return {
+            "type_picture_path": dest_with_name,
+            "default_caption": "from https://pixabay.com/",
+        }
         # "folder/1.jpeg"
 
 
 class Randomizer:
-
     @staticmethod
     def randomize_name():
         NAME_LEN = 8
@@ -67,6 +74,7 @@ class Randomizer:
         return "".join(name)
 
     # def randomize_pic_choice(num):
+
 
 # print(Pixabay.get_answer())
 # print(Randomizer.randomize_name())

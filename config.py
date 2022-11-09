@@ -14,26 +14,22 @@ class Config:
 
     TMP_DIR = "tmp"
 
-    OPTS_KEYBOARD = json.dumps({
-        "inline_keyboard": [
-            [
-                {
-                    "text": "picture",
-                    "callback_data": "picture"
-                },
-                {
-                    "text": "weather in Moscow",
-                    "callback_data": "weather"
-                }
-            ]
-        ],
-        "remove_keyboard": True
-    })
+    OPTS_KEYBOARD = json.dumps(
+        {
+            "inline_keyboard": [
+                [
+                    {"text": "picture", "callback_data": "picture"},
+                    {"text": "weather in Moscow", "callback_data": "weather"},
+                ]
+            ],
+            "remove_keyboard": True,
+        }
+    )
 
-    # OPTS_KEYBOARD = json.dumps({ 
-    #     "keyboard": 
+    # OPTS_KEYBOARD = json.dumps({
+    #     "keyboard":
     #     [["Yes"], ["No"]],
-    #     # [["Yes", "No"], ["Maybe"], ["1", "2", "3"]], 
+    #     # [["Yes", "No"], ["Maybe"], ["1", "2", "3"]],
     #     # "resize_keyboard": True,
     #     # "one_time_keyboard":True
     #     "remove_keyboard": True
