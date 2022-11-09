@@ -1,20 +1,15 @@
 import time
 
+from config import Config
 
 class MorningDeterminer:
 
     @staticmethod
     def ismorning() -> bool:
         # 08:00 - 08:05
-
-        BEGIN_H = 8
-        BEGIN_MIN = 0
-        END_M = 5
-
-        # TEST_TIME
-        # BEGIN_H = 14
-        # BEGIN_MIN = 20
-        # END_M = 25
+        BEGIN_H = Config().BEGIN_H
+        BEGIN_MIN = Config().BEGIN_MIN
+        END_M = Config().END_M
 
         cur_time = time.strftime("%H:%M")
 

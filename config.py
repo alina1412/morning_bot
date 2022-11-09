@@ -1,12 +1,16 @@
 import json
-import os
+from os import environ
 
 
 class Config:
-    BOT_TOKEN = os.environ.get("bot_token")
+    BOT_TOKEN = environ.get("bot_token")
     print("token", BOT_TOKEN)
-    WEATHER_ID = os.environ.get("weather_id")
-    PIC_KEY = os.environ.get("pic_key")
+    WEATHER_ID = environ.get("weather_id")
+    PIC_KEY = environ.get("pic_key")
+
+    BEGIN_H = int(environ.get("BEGIN_H", 8))
+    BEGIN_MIN = int(environ.get("BEGIN_MIN", 0))
+    END_M = int(environ.get("BEGIN_MIN", 5))
 
     TMP_DIR = "tmp"
 
