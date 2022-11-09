@@ -1,6 +1,6 @@
 import os
 
-from service.fetchers.site_pixabay import Pixabay
+from morning_bot.fetchers.site_pixabay import Pixabay
 
 
 class PictureManager:

@@ -1,8 +1,7 @@
+"""classes Sender, TextSender, PictureSender"""
 import httpx
 
 from config import Config
-
-# classes Sender, TextSender, PictureSender
 
 
 class Sender:

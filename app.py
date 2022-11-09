@@ -1,11 +1,13 @@
 import asyncio
 import time
 
-from service.choices_records import Collector
-from service.morning_determiner import MorningDeterminer
-from service.sender import Sender
-from service.switcher import Switcher
-from service.tg_chats import TGChats
+from uvicorn import run
+
+from morning_bot.choices_records import Collector
+from morning_bot.morning_determiner import MorningDeterminer
+from morning_bot.sender import Sender
+from morning_bot.switcher import Switcher
+from morning_bot.tg_chats import TGChats
 
 
 class MorningBot:
@@ -40,10 +42,18 @@ class MorningBot:
                 print()
 
 
-def main():
+def app():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MorningBot().run())
 
 
 if __name__ == "__main__":
-    main()
+    app()
+    # run(
+    #     "service.__main__:app",
+    #     # host=app_settings.APP_HOST,
+    #     # port=app_settings.APP_PORT,
+    #     reload=True,
+    #     reload_dirs=["service", "tests"],
+    #     # log_level=app_settings.LOG_LEVEL,
+    # )

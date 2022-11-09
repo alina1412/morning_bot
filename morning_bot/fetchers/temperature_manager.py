@@ -1,4 +1,4 @@
-from service.fetchers.site_openweathermap import Openweather
+from morning_bot.fetchers.site_openweathermap import Openweather
 
 
 class TemperatureManager:
