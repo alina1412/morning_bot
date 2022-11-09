@@ -3,6 +3,7 @@ import json
 from dotenv import load_dotenv
 from os import environ
 
+load_dotenv()
 
 class Config:
     BOT_TOKEN = environ.get("bot_token")

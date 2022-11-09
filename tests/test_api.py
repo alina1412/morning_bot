@@ -5,7 +5,7 @@ import httpx
 import pytest
 import requests
 
-from config import Config
+from morning_bot.config import Config
 from morning_bot.fetchers import site_openweathermap
 
 dest_with_name = path.join(Config.TMP_DIR, "randname")

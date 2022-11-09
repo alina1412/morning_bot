@@ -2,7 +2,7 @@ import time
 
 import httpx
 
-from config import Config
+from .config import Config
 
 
 class TGChats:

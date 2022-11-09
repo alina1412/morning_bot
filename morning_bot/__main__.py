@@ -1,13 +1,13 @@
 import asyncio
 import time
 
-from uvicorn import run
+# from uvicorn import run
 
-from morning_bot.choices_records import Collector
-from morning_bot.morning_determiner import MorningDeterminer
-from morning_bot.sender import Sender
-from morning_bot.switcher import Switcher
-from morning_bot.tg_chats import TGChats
+from .choices_records import Collector
+from .morning_determiner import MorningDeterminer
+from .sender import Sender
+from .switcher import Switcher
+from .tg_chats import TGChats
 
 
 class MorningBot:

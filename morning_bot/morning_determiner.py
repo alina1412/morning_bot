@@ -1,6 +1,6 @@
 import time
 
-from config import Config
+from morning_bot.config import Config
 
 
 class MorningDeterminer:
