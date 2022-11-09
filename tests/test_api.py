@@ -1,4 +1,3 @@
-
 from os import path
 
 import httpx
@@ -15,6 +14,7 @@ print(dest_with_name)
 
 weather_app_id = site_openweathermap.Openweather().openweather_id
 print(weather_app_id)
+
 
 @pytest.mark.my
 def test_get_weather_data():
@@ -44,7 +44,7 @@ def test_get_weather_data():
 
 #     assert resp.ok is True
 #     data = resp.json()
-    # print()
+# print()
 
 
 # test_get_data()

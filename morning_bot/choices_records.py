@@ -16,32 +16,32 @@ class Data:
             print(error)
 
     def create(self):
-        q = f"""CREATE table IF NOT EXISTS
+        query = f"""CREATE table IF NOT EXISTS
             {self.table_name} (user_id INTEGER PRIMARY KEY,
             choice TEXT NOT NULL)"""
         with self.conn:
-            self.conn.execute(q)
+            self.conn.execute(query)
             self.conn.commit()
 
     def update_decision(self, user_id, choice):
-        q = f"""UPDATE {self.table_name}
+        query = f"""UPDATE {self.table_name}
             SET choice = '{choice}'
             WHERE user_id = {user_id}"""
         with self.conn:
-            self.conn.execute(q)
+            self.conn.execute(query)
             self.conn.commit()
 
     def select_sql(self, condition=""):
-        q = f"SELECT * FROM {self.table_name}" + " " + condition
+        query = f"SELECT * FROM {self.table_name}" + " " + condition
         with self.conn:
-            return self.conn.execute(q)
+            return self.conn.execute(query)
 
     def insert(self, user_id, choice):
-        q = f"""INSERT into {self.table_name}
+        query = f"""INSERT into {self.table_name}
             (user_id, choice)
             VALUES (?,?)"""
         with self.conn:
-            self.conn.execute(q, (user_id, choice))
+            self.conn.execute(query, (user_id, choice))
             self.conn.commit()
 
     def close(self):
@@ -51,26 +51,20 @@ class Data:
 
 class Collector:
     def __init__(self) -> None:
-        self.d = Data()
-        self.d.connect()
-        self.d.create()
+        self.db = Data()
+        self.db.connect()
+        self.db.create()
 
     def save_choice(self, user_id, choice):
         try:
-            self.d.insert(user_id, choice)
+            self.db.insert(user_id, choice)
         except Exception:
-            self.d.update_decision(user_id, choice)
+            self.db.update_decision(user_id, choice)
 
     def get_choice(self, user_id):
         condition = f"WHERE user_id = {user_id}"
-        pair = list(self.d.select_sql(condition))
+        pair = list(self.db.select_sql(condition))
         return pair[0][1] if pair else []
 
     def get_all_choices(self):
-        return list(self.d.select_sql())
-
-
-# print(Collector().get_all_choices())
-# res = Collector().get_choice(380920761)
-# Collector().save_choice(11, "5")
-# print(res)
+        return list(self.db.select_sql())

@@ -1,13 +1,19 @@
 import asyncio
+import logging
 import time
 
-# from uvicorn import run
+from morning_bot.fetchers.pic_manager import PictureManager
+from morning_bot.fetchers.temperature_manager import TemperatureManager
+
 
 from .choices_records import Collector
 from .morning_determiner import MorningDeterminer
 from .sender import Sender
 from .switcher import Switcher
 from .tg_chats import TGChats
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class MorningBot:
@@ -16,10 +22,10 @@ class MorningBot:
         self.tg_chats = TGChats()
         self.collector = Collector()
 
-    async def process(self, person, manager):
-        print(f"MorningBot: getting data for the {person}", time.strftime("%X"))
-        data = await manager.get_morning_data()
-        print("data fetched", data, time.strftime("%X"))
+    async def process(self, person: int, manager: PictureManager | TemperatureManager):
+        # logger.debug("MorningBot: getting data for the %s %s", person, time.strftime("%X"))
+        data: dict = await manager.get_morning_data()
+        # logger.debug("data fetched %s %s", data, time.strftime("%X"))
         await self.sender.send_data(data, person)
 
     async def run(self):
@@ -37,7 +43,7 @@ class MorningBot:
 
                 for i in range(60):  # 60 - 5 min
                     await self.tg_chats.list_updates(self.collector)
-                    print("sleep", time.strftime("%X"))
+                    # logger.debug("sleep %s", time.strftime("%X"))
                     time.sleep(5)
                 print()
 
@@ -49,11 +55,3 @@ def app():
 
 if __name__ == "__main__":
     app()
-    # run(
-    #     "service.__main__:app",
-    #     # host=app_settings.APP_HOST,
-    #     # port=app_settings.APP_PORT,
-    #     reload=True,
-    #     reload_dirs=["service", "tests"],
-    #     # log_level=app_settings.LOG_LEVEL,
-    # )

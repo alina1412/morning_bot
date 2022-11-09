@@ -1,6 +1,10 @@
 import httpx
 
+from morning_bot.fetchers import logging
 from ..config import Config
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Openweather:
@@ -9,8 +13,12 @@ class Openweather:
 
     @staticmethod
     async def get_answer():
-        data = await Openweather.get_data()
-        return Openweather.return_data(data)
+        try:
+            data = await Openweather.get_data()
+            return Openweather.make_response(data)
+        except Exception as exc:
+            # logger.debug(exc)
+            ...
 
     @staticmethod
     async def get_data():
@@ -22,17 +30,20 @@ class Openweather:
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, params=params)
             data = resp.json()
-
+            
             if data and "main" in data:
                 return data
             print("weather not found")
             return None
 
+
     @staticmethod
-    def return_data(data):
+    def make_response(data):
+        temp = data.get("main", {}).get("temp", None)
+        if temp is None:
+            return {"type_text": "Sorry, an error had occurred"}
         return {
             "type_text": f"Temperature in {Openweather.city} now: "
-            + str(round(data["main"]["temp"]))
-            + " *C"
+            + str(round(temp))
+            + " °C"
         }
-        # return {"type_text": "Warm"}

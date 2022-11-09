@@ -5,7 +5,10 @@ from os import environ
 
 load_dotenv()
 
+
 class Config:
+    DEBUG = environ.get("DEBUG", True) == True
+
     BOT_TOKEN = environ.get("bot_token")
     print("token", BOT_TOKEN)
     WEATHER_ID = environ.get("weather_id")

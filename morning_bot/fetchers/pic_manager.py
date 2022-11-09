@@ -1,6 +1,10 @@
 import os
 
 from morning_bot.fetchers.site_pixabay import Pixabay
+from morning_bot.fetchers import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class PictureManager:
@@ -9,7 +13,7 @@ class PictureManager:
         if self.isvalid(ans):
             return ans
         else:
-            print("path of a pic not valid")
+            logger.debug("path of a pic not valid")
             return {}
 
     def isvalid(self, data) -> bool:
@@ -17,5 +21,5 @@ class PictureManager:
             path = data["type_picture_path"]
             return os.path.isfile(path)
         else:
-            print("no path of a pic")
+            logger.debug("no path of a pic")
             return False

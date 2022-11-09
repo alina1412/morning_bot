@@ -1,14 +1,19 @@
 """classes Sender, TextSender, PictureSender"""
+import logging
 import httpx
 
 from .config import Config
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Sender:
     def __init__(self):
         self.BOT_TOKEN = Config.BOT_TOKEN
 
-    async def send_data(self, data, person):
+    async def send_data(self, data: dict, person: int):
         for opt_sender in (TextSender, PictureSender):
             try:
                 await opt_sender().send(data, person)
@@ -17,13 +22,10 @@ class Sender:
 
 
 class TextSender(Sender):
-    # def __init__(self):
-    #     super().__init__()
-
-    async def send(self, data, person):
+    async def send(self, data: dict, person: int):
         if "type_text" not in data:
             return
-        print("sending text", data, self.BOT_TOKEN)
+        # logger.debug("sending text", data, self.BOT_TOKEN)
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendMessage"
         params = {"chat_id": person, "text": "Morning!\n" + data["type_text"]}
         async with httpx.AsyncClient() as client:
@@ -31,10 +33,7 @@ class TextSender(Sender):
 
 
 class PictureSender(Sender):
-    # def __init__(self):
-    #     super().__init__()
-
-    async def send(self, data, person):
+    async def send(self, data: dict, person: int):
         if "type_picture_path" not in data:
             return
         image_path = data["type_picture_path"]
@@ -44,7 +43,7 @@ class PictureSender(Sender):
         else:
             default_caption = ""
 
-        print("sending picture path", data, self.BOT_TOKEN)
+        # logger.debug("sending picture path", data, self.BOT_TOKEN)
 
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendPhoto"
         params = {
