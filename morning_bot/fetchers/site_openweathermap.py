@@ -30,12 +30,11 @@ class Openweather:
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, params=params)
             data = resp.json()
-            
+
             if data and "main" in data:
                 return data
             print("weather not found")
             return None
-
 
     @staticmethod
     def make_response(data):
