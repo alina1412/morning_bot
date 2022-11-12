@@ -1,41 +1,39 @@
+"""classes Sender, TextSender, PictureSender"""
+import logging
+
 import httpx
-from config import Config
 
+from .config import Config
 
-# classes Sender, TextSender, PictureSender
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
 
 class Sender:
     def __init__(self):
         self.BOT_TOKEN = Config.BOT_TOKEN
 
-    async def send_data(self, data, person):
+    async def send_data(self, data: dict, person: int):
         for opt_sender in (TextSender, PictureSender):
             try:
                 await opt_sender().send(data, person)
-            except Exception:
-                raise BaseException
+            except Exception as exc:
+                raise BaseException from exc
 
 
 class TextSender(Sender):
-    # def __init__(self):
-    #     super().__init__()
-
-    async def send(self, data, person):
+    async def send(self, data: dict, person: int):
         if "type_text" not in data:
             return
-        print("sending text", data, self.BOT_TOKEN)
+        # logger.debug("sending text", data, self.BOT_TOKEN)
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendMessage"
-        params = {'chat_id': person,
-                  'text': 'Morning!\n' + data["type_text"]}
+        params = {"chat_id": person, "text": "Morning!\n" + data["type_text"]}
         async with httpx.AsyncClient() as client:
             await client.post(url, params=params)
 
 
 class PictureSender(Sender):
-    # def __init__(self):
-    #     super().__init__()
-
-    async def send(self, data, person):
+    async def send(self, data: dict, person: int):
         if "type_picture_path" not in data:
             return
         image_path = data["type_picture_path"]
@@ -45,12 +43,14 @@ class PictureSender(Sender):
         else:
             default_caption = ""
 
-        print("sending picture path", data, self.BOT_TOKEN)
+        # logger.debug("sending picture path", data, self.BOT_TOKEN)
 
         url = f"https://api.telegram.org/bot{self.BOT_TOKEN}/sendPhoto"
-        params = {'chat_id': person,
-                  'caption': 'Morning!\n' + default_caption,
-                  'media_type': 'photo'}
+        params = {
+            "chat_id": person,
+            "caption": "Morning!\n" + default_caption,
+            "media_type": "photo",
+        }
 
         async with httpx.AsyncClient() as client:
             with open(image_path, "rb") as pic_file:

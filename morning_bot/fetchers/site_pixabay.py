@@ -1,8 +1,10 @@
 import os
-import aiofiles
 from random import randint
+
+import aiofiles
 import httpx
-from config import Config
+
+from ..config import Config
 
 
 class Pixabay:
@@ -17,9 +19,13 @@ class Pixabay:
 
     @staticmethod
     async def get_data():
-        url = 'https://pixabay.com/api/'
-        params = {"key": Pixabay._KEY_PIC, "q": "morning",
-                  "safesearch": "true", "per_page": Pixabay._amount}
+        url = "https://pixabay.com/api/"
+        params = {
+            "key": Pixabay._KEY_PIC,
+            "q": "morning",
+            "safesearch": "true",
+            "per_page": Pixabay._amount,
+        }
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, params=params)
             data = resp.json()
@@ -33,8 +39,9 @@ class Pixabay:
     @staticmethod
     async def save_data(data):
         rand_choice = randint(0, Pixabay._amount - 1)
-        # print(len(data["hits"]), data["totalHits"])
-        pic_addr = data["hits"][rand_choice]["webformatURL"]
+        pic_addr = data.get("hits", {}).get(rand_choice, {}).get("webformatURL", None)
+        if pic_addr is None:
+            return
         randname = Randomizer.randomize_name() + ".jpg"
         folder_name = Config.TMP_DIR
         if not os.path.exists(folder_name):
@@ -43,7 +50,7 @@ class Pixabay:
         dest_with_name = os.path.join(folder_name, randname)
         async with httpx.AsyncClient() as client:
             resp = await client.get(pic_addr)
-        
+
         async with aiofiles.open(dest_with_name, "wb") as output:
             async for chunk in resp.aiter_bytes():
                 if chunk:
@@ -53,20 +60,15 @@ class Pixabay:
 
     @staticmethod
     def return_data(dest_with_name):
-        return {"type_picture_path": dest_with_name,
-                "default_caption": "from https://pixabay.com/"}
-        # "folder/1.jpeg"
+        return {
+            "type_picture_path": dest_with_name,
+            "default_caption": "from https://pixabay.com/",
+        }
 
 
 class Randomizer:
-
     @staticmethod
     def randomize_name():
         NAME_LEN = 8
         name = [chr(randint(97, 122)) for _ in range(NAME_LEN)]
         return "".join(name)
-
-    # def randomize_pic_choice(num):
-
-# print(Pixabay.get_answer())
-# print(Randomizer.randomize_name())

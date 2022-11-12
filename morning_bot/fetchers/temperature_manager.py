@@ -1,8 +1,7 @@
-from fetchers.site_openweathermap import Openweather
+from morning_bot.fetchers.site_openweathermap import Openweather
 
 
 class TemperatureManager:
-
     async def get_morning_data(self) -> dict:
         ans = await Openweather.get_answer()
         if self.isvalid(ans):
