@@ -7,7 +7,7 @@ class MorningDeterminer:
     @staticmethod
     def ismorning() -> bool:
         """08:00 - 08:05"""
-        if Config().DEBUG:
+        if Config.DEBUG:
             return True
 
         BEGIN_H: int = Config.BEGIN_H

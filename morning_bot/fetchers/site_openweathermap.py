@@ -1,6 +1,7 @@
 import httpx
 
 from morning_bot.fetchers import logging
+
 from ..config import Config
 
 logger = logging.getLogger(__name__)

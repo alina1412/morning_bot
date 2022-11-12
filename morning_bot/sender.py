@@ -1,9 +1,9 @@
 """classes Sender, TextSender, PictureSender"""
 import logging
+
 import httpx
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -17,8 +17,8 @@ class Sender:
         for opt_sender in (TextSender, PictureSender):
             try:
                 await opt_sender().send(data, person)
-            except Exception:
-                raise BaseException
+            except Exception as exc:
+                raise BaseException from exc
 
 
 class TextSender(Sender):

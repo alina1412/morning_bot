@@ -1,13 +1,13 @@
 import json
+from os import environ
 
 from dotenv import load_dotenv
-from os import environ
 
 load_dotenv()
 
 
 class Config:
-    DEBUG = environ.get("DEBUG", True) == True
+    DEBUG = environ.get("DEBUG", True) is True
 
     BOT_TOKEN = environ.get("bot_token")
     print("token", BOT_TOKEN)

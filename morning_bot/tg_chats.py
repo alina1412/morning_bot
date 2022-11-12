@@ -1,5 +1,6 @@
-import time
 import logging
+import time
+
 import httpx
 
 from .config import Config
@@ -10,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 class TGChats:
     def __init__(self) -> None:
-        self.BOT_TOKEN = Config().BOT_TOKEN
+        self.BOT_TOKEN = Config.BOT_TOKEN
         self.offset = 0
 
     async def list_updates(self, choices_collector):

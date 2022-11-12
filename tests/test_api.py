@@ -1,6 +1,5 @@
 from os import path
 
-import httpx
 import pytest
 import requests
 

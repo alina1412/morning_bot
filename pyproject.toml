@@ -31,14 +31,13 @@ sniffio = "1.2.0"
 tomli = "2.0.1"
 urllib3 = "1.26.9"
 python-dotenv = "^0.21.0"
-uvicorn = "^0.19.0"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
 isort = "^5.10.1"
-pylint = "^2.15.5"
 pytest = "^7.2.0"
+pylint = "^2.15.5"
 
 [build-system]
 requires = ["poetry-core"]

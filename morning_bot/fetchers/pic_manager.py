@@ -1,7 +1,7 @@
 import os
 
-from morning_bot.fetchers.site_pixabay import Pixabay
 from morning_bot.fetchers import logging
+from morning_bot.fetchers.site_pixabay import Pixabay
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
