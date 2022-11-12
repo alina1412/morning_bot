@@ -5,7 +5,6 @@ import time
 from morning_bot.fetchers.pic_manager import PictureManager
 from morning_bot.fetchers.temperature_manager import TemperatureManager
 
-
 from .choices_records import Collector
 from .morning_determiner import MorningDeterminer
 from .sender import Sender
@@ -28,7 +27,7 @@ class MorningBot:
         # logger.debug("data fetched %s %s", data, time.strftime("%X"))
         await self.sender.send_data(data, person)
 
-    async def run(self):
+    async def app(self):
 
         while True:
             await self.tg_chats.list_updates(self.collector)
@@ -41,17 +40,17 @@ class MorningBot:
                     que.append(self.process(person_id, Switcher(choice)))
                 await asyncio.gather(*que)
 
-                for i in range(60):  # 60 - 5 min
+                for _ in range(60):  # 60 - 5 min
                     await self.tg_chats.list_updates(self.collector)
                     # logger.debug("sleep %s", time.strftime("%X"))
                     time.sleep(5)
                 print()
 
 
-def app():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(MorningBot().run())
-
-
 if __name__ == "__main__":
-    app()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        asyncio.run(MorningBot().app())
+    except KeyboardInterrupt:
+        pass
