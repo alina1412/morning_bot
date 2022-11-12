@@ -1,5 +1,4 @@
 import logging
-import time
 
 import httpx
 
@@ -10,6 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class TGChats:
+    """sends requests to api.telegram.org*"""
     def __init__(self) -> None:
         self.BOT_TOKEN = Config.BOT_TOKEN
         self.offset = 0

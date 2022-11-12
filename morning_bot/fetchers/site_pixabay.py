@@ -32,9 +32,8 @@ class Pixabay:
 
             if data and data["totalHits"]:
                 return data
-            else:
-                print("No data")
-                return None
+            print("No data")
+            return None
 
     @staticmethod
     async def save_data(data):

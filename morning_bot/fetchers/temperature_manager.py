@@ -10,6 +10,4 @@ class TemperatureManager:
 
     def isvalid(self, data) -> bool:
         # {'type_text': 'Temperature in Moscow now: 8 *C'}
-        if "type_text" not in data:
-            return False
-        return True
+        return "type_text" in data
