@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 class Sender:
     """calls methods from other classes to send morning data to users"""
+
     def __init__(self):
         self.BOT_TOKEN = Config.BOT_TOKEN
 
